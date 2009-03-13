@@ -12,29 +12,6 @@ module ActionView
         COUNTRIES
       end
       
-      def translated_countries
-        if defined?(I18n)
-          translate_countries(countries)
-        else
-          countries
-        end
-      end
-
-      def translate_countries(countries = [])
-        countries.collect do |country_name|
-          begin
-            # See if there is a translation for this country name
-            translation = I18n.translate("countries.#{country_name}", :raise => true)
-          rescue I18n::MissingTranslationData
-            # Translation not found for this country, use the original country name, which is probably more correct 
-            # than 'translation missing...'
-            translation = country_name
-          end
-          
-          [translation, country_name]
-        end
-      end
-
       # Returns a string of option tags for pretty much any country in the world. Supply a country name as +selected+ to
       # have it marked as the selected option tag. You can also supply an array of countries as +priority_countries+, so
       # that they will be listed above the rest of the (long) list.
@@ -54,8 +31,8 @@ module ActionView
         return country_options + options_for_select(translated_countries, selected)
       end
 
-      # All the countries included in the country_options output. These are the original values and are to be used as
-      # translation keys.
+      # All the countries included in the country_options output. These are the original values, are to be used as
+      # translation keys for the Internationalization backend and will be stored in the database.
       COUNTRIES = ["Afghanistan","Åland Islands","Albania","Algeria","American Samoa","Andorra","Angola",
         "Anguilla","Antarctica","Antigua and Barbuda","Argentina","Armenia","Aruba","Australia","Austria",
         "Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin",
@@ -93,6 +70,32 @@ module ActionView
         "United States","United States Minor Outlying Islands","Uruguay","Uzbekistan","Vanuatu","Venezuela",
         "Viet Nam","Virgin Islands, British","Virgin Islands, U.S.","Wallis and Futuna","Western Sahara",
         "Yemen","Zambia","Zimbabwe"] unless const_defined?("COUNTRIES")
+
+      private
+
+        # Returns an array with all country names and their translated equivalent in the current locale.
+        def translated_countries
+          translate_countries(countries)
+        end
+
+        # Returns an array with the given country names and their translated equivalent in the current locale.
+        def translate_countries(countries = [])
+          return countries unless defined?(I18n)
+          
+          countries.collect do |country_name|
+            begin
+              # See if there is a translation for this country name
+              translation = I18n.translate("countries.#{country_name}", :raise => true)
+            rescue I18n::MissingTranslationData
+              # Translation not found for this country, use the original country name, which is probably more correct 
+              # than 'translation missing...'
+              translation = country_name
+            end
+
+            [translation, country_name]
+          end
+        end
+
     end
     
     class InstanceTag
@@ -114,5 +117,6 @@ module ActionView
         @template.country_select(@object_name, method, priority_countries, options.merge(:object => @object), html_options)
       end
     end
+
   end
 end
