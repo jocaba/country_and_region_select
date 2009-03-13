@@ -6,6 +6,34 @@ module ActionView
       def country_select(object, method, priority_countries = nil, options = {}, html_options = {})
         InstanceTag.new(object, method, self, options.delete(:object)).to_country_select_tag(priority_countries, options, html_options)
       end
+
+      # Returns the full list of known countries
+      def countries
+        COUNTRIES
+      end
+      
+      def translated_countries
+        return countries unless defined?(I18n)
+
+        translations = []
+        countries.each do |country_name|
+          begin
+            # See if there is a translation for this country name
+            translation = I18n.translate("countries.#{country_name}", :raise => true)
+          rescue I18n::MissingTranslationData
+            # Translation not found for this country, use the original country name, which is probably more correct 
+            # than 'translation missing...'
+            
+            RAILS_DEFAULT_LOGGER.debug("Translation for '#{country_name}' not found") if defined?(RAILS_DEFAULT_LOGGER)
+            
+            translation = country_name
+          end
+          translations << [translation, country_name]
+        end
+        
+        return translations
+      end
+
       # Returns a string of option tags for pretty much any country in the world. Supply a country name as +selected+ to
       # have it marked as the selected option tag. You can also supply an array of countries as +priority_countries+, so
       # that they will be listed above the rest of the (long) list.
@@ -19,9 +47,11 @@ module ActionView
           country_options += "<option value=\"\" disabled=\"disabled\">-------------</option>\n"
         end
 
-        return country_options + options_for_select(COUNTRIES, selected)
+        return country_options + options_for_select(translated_countries, selected)
       end
-      # All the countries included in the country_options output.
+
+      # All the countries included in the country_options output. These are the original values and are to be used as
+      # translation keys.
       COUNTRIES = ["Afghanistan","Åland Islands","Albania","Algeria","American Samoa","Andorra","Angola",
         "Anguilla","Antarctica","Antigua and Barbuda","Argentina","Armenia","Aruba","Australia","Austria",
         "Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin",
