@@ -52,7 +52,7 @@ describe ActionView::Helpers::FormOptionsHelper do
   
     describe "with locale set to 'en'" do
       describe "translated_countries" do
-        it "should return the original countries Array" do
+        it "should return the default translations" do
           helper.send(:translated_countries).should == @translations
         end
       end
@@ -67,13 +67,17 @@ describe ActionView::Helpers::FormOptionsHelper do
           result = helper.country_options_for_select('Denmark')
         end
 
-        it "should return original values"
-
         describe "with priority countries" do
-          it "should put priority countries at the top"
-          it "should include a separator line"
+          it "should put priority countries at the top" do
+            helper.should_receive(:options_for_select).with([['Denmark', 'Denmark']], 'Ireland')
+            helper.should_receive(:options_for_select).with(@translations, 'Ireland')
+            result = helper.country_options_for_select('Ireland', ['Denmark'])
+          end
+
+          it "should include a separator line" do
+            helper.country_options_for_select('Ireland', ['Denmark']).should match(/<option value="" disabled="disabled">-+<\/option>/)
+          end
         end
-      
       end
     end
 
@@ -143,11 +147,22 @@ describe ActionView::Helpers::FormOptionsHelper do
           helper.country_options_for_select
         end
 
-        it "should translate priority countries" do
-          helper.should_receive(:options_for_select).with([['Danmark', 'Denmark']], nil)
-          result = helper.country_options_for_select(nil, ['Denmark'])
-        end
+        describe "with priority countries" do
+          it "should put priority countries at the top" do
+            helper.should_receive(:options_for_select).with([['Danmark', 'Denmark']], 'Ireland')
+            helper.should_receive(:options_for_select).with(@translations, 'Ireland')
+            result = helper.country_options_for_select('Ireland', ['Denmark'])
+          end
 
+          it "should include a separator line" do
+            helper.country_options_for_select('Ireland', ['Denmark']).should match(/<option value="" disabled="disabled">-+<\/option>/)
+          end
+
+          it "should translate priority countries" do
+            helper.should_receive(:options_for_select).with([['Danmark', 'Denmark']], nil)
+            result = helper.country_options_for_select(nil, ['Denmark'])
+          end
+        end
       end
     end
   end
