@@ -85,7 +85,7 @@ module ActionView
           countries.collect do |country_name|
             begin
               # See if there is a translation for this country name
-              translation = I18n.translate("countries.#{country_name}", :raise => true)
+              translation = I18n.translate(country_name, :scope => 'countries', :raise => true)
             rescue I18n::MissingTranslationData
               # Translation not found for this country, use the original country name, which is probably more correct 
               # than 'translation missing...'

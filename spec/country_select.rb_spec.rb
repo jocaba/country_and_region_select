@@ -92,7 +92,7 @@ describe ActionView::Helpers::FormOptionsHelper do
 
         # Provide the translations through the backend
         @translations.each do |danish, english|
-          I18n.stub!(:translate).with("countries.#{english}", :raise => true).and_return(danish)
+          I18n.stub!(:translate).with(english, :scope => 'countries', :raise => true).and_return(danish)
         end
       end
 
@@ -103,7 +103,7 @@ describe ActionView::Helpers::FormOptionsHelper do
 
         it "should look up each translation in the backend" do
           @translations.each do |danish, english|
-            I18n.should_receive(:translate).with("countries.#{english}", :raise => true)
+            I18n.should_receive(:translate).with(english, :scope => 'countries', :raise => true)
           end
           helper.send(:translated_countries)
         end
@@ -111,7 +111,7 @@ describe ActionView::Helpers::FormOptionsHelper do
         it "should use original value if translation isn't known" do
           # Don't fail when encountering the sovereign state of Petoria.
           helper.should_receive(:countries).and_return(['Petoria'])
-          I18n.should_receive(:translate).with("countries.Petoria", :raise => true).and_raise(I18n::MissingTranslationData)
+          I18n.should_receive(:translate).with("Petoria", :scope => 'countries', :raise => true).and_raise(I18n::MissingTranslationData)
           helper.send(:translated_countries).should == [['Petoria', 'Petoria']]
         end
       end
@@ -123,14 +123,14 @@ describe ActionView::Helpers::FormOptionsHelper do
 
         it "should look up each translation in the backend" do
           @translations.each do |danish, english|
-            I18n.should_receive(:translate).with("countries.#{english}", :raise => true)
+            I18n.should_receive(:translate).with(english, :scope => 'countries', :raise => true)
           end
           helper.send(:translate_countries, @translations.collect { |danish, english| english })
         end
 
         it "should use original value if translation isn't known" do
           # Don't fail when encountering the sovereign state of Petoria.
-          I18n.should_receive(:translate).with("countries.Petoria", :raise => true).and_raise(I18n::MissingTranslationData)
+          I18n.should_receive(:translate).with("Petoria", :scope => 'countries', :raise => true).and_raise(I18n::MissingTranslationData)
           helper.send(:translate_countries, ['Petoria']).should == [['Petoria', 'Petoria']]
         end
       end
