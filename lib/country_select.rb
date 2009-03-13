@@ -13,37 +13,41 @@ module ActionView
       end
       
       def translated_countries
-        return countries unless defined?(I18n)
+        if defined?(I18n)
+          translate_countries(countries)
+        else
+          countries
+        end
+      end
 
-        translations = []
-        countries.each do |country_name|
+      def translate_countries(countries = [])
+        countries.collect do |country_name|
           begin
             # See if there is a translation for this country name
             translation = I18n.translate("countries.#{country_name}", :raise => true)
           rescue I18n::MissingTranslationData
             # Translation not found for this country, use the original country name, which is probably more correct 
             # than 'translation missing...'
-            
-            RAILS_DEFAULT_LOGGER.debug("Translation for '#{country_name}' not found") if defined?(RAILS_DEFAULT_LOGGER)
-            
             translation = country_name
           end
-          translations << [translation, country_name]
+          
+          [translation, country_name]
         end
-        
-        return translations
       end
 
       # Returns a string of option tags for pretty much any country in the world. Supply a country name as +selected+ to
       # have it marked as the selected option tag. You can also supply an array of countries as +priority_countries+, so
       # that they will be listed above the rest of the (long) list.
+      # 
+      # All country names should be given in English and will be passed to the current I18n backend. The text displayed
+      # in each option tag will be the result of the translation, while the value will remain the english value.
       #
       # NOTE: Only the option tags are returned, you have to wrap this call in a regular HTML select tag.
       def country_options_for_select(selected = nil, priority_countries = nil)
         country_options = ""
 
         if priority_countries
-          country_options += options_for_select(priority_countries, selected)
+          country_options += options_for_select(translate_countries(priority_countries), selected)
           country_options += "<option value=\"\" disabled=\"disabled\">-------------</option>\n"
         end
 
