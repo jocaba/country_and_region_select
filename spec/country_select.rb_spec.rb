@@ -101,6 +101,13 @@ describe ActionView::Helpers::FormOptionsHelper do
           helper.send(:translated_countries).should be_instance_of(Array)
         end
 
+        it "should sort the translated values" do
+          @result = ['']
+          helper.should_receive(:translate_countries).and_return(@result)
+          @result.should_receive(:sort)
+          helper.send(:translated_countries)
+        end
+        
         it "should look up each translation in the backend" do
           @translations.each do |danish, english|
             I18n.should_receive(:translate).with(english, :scope => 'countries', :raise => true)
@@ -119,14 +126,6 @@ describe ActionView::Helpers::FormOptionsHelper do
       describe "translate_countries" do
         it "should return an Array with translated country names" do
           helper.send(:translate_countries, []).should be_instance_of(Array)
-        end
-
-        it "should sort the translated Array" do
-          helper.send(:translate_countries, ['Petoria', 'American Samoa', 'Denmark']).should == [
-            ['Amerikansk Samoa', 'American Samoa'],
-            ['Danmark', 'Denmark'],
-            ['Petoria', 'Petoria']
-          ]
         end
 
         it "should look up each translation in the backend" do
@@ -150,9 +149,12 @@ describe ActionView::Helpers::FormOptionsHelper do
           result = helper.country_options_for_select('Denmark')
         end
 
-        it "should use translated values" do
-          helper.should_receive(:options_for_select).with(@translations, nil)
-          helper.country_options_for_select
+        it "should sort the big list of countries" do
+          helper.send(:translate_countries, ['Petoria', 'American Samoa', 'Denmark']).should == [
+            ['Amerikansk Samoa', 'American Samoa'],
+            ['Danmark', 'Denmark'],
+            ['Petoria', 'Petoria']
+          ]
         end
 
         describe "with priority countries" do
