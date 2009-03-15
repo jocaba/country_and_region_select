@@ -85,10 +85,10 @@ describe ActionView::Helpers::FormOptionsHelper do
       before :each do
         @translations = [
           ["Amerikansk Samoa", "American Samoa"],
-          ["Elfenbenskysten", "Côte d'Ivoire"],
           ["Danmark", "Denmark"],
-          ["Den Hellige Stol (Vatikan Staten)", 'Holy See (Vatican City State)']
-        ]        
+          ["Den Hellige Stol (Vatikan Staten)", 'Holy See (Vatican City State)'],
+          ["Elfenbenskysten", "Côte d'Ivoire"]
+        ]
 
         # Provide the translations through the backend
         @translations.each do |danish, english|
@@ -119,6 +119,14 @@ describe ActionView::Helpers::FormOptionsHelper do
       describe "translate_countries" do
         it "should return an Array with translated country names" do
           helper.send(:translate_countries, []).should be_instance_of(Array)
+        end
+
+        it "should sort the translated Array" do
+          helper.send(:translate_countries, ['Petoria', 'American Samoa', 'Denmark']).should == [
+            ['Amerikansk Samoa', 'American Samoa'],
+            ['Danmark', 'Denmark'],
+            ['Petoria', 'Petoria']
+          ]
         end
 
         it "should look up each translation in the backend" do

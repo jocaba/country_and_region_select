@@ -82,7 +82,7 @@ module ActionView
         def translate_countries(countries = [])
           return countries unless defined?(I18n)
           
-          countries.collect do |country_name|
+          countries.collect { |country_name|
             begin
               # See if there is a translation for this country name
               translation = I18n.translate(country_name, :scope => 'countries', :raise => true)
@@ -93,7 +93,7 @@ module ActionView
             end
 
             [translation, country_name]
-          end
+          }.sort {|one, other| one.first <=> other.first}
         end
 
     end
