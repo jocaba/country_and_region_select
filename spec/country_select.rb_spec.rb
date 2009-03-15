@@ -149,14 +149,6 @@ describe ActionView::Helpers::FormOptionsHelper do
           result = helper.country_options_for_select('Denmark')
         end
 
-        it "should sort the big list of countries" do
-          helper.send(:translate_countries, ['Petoria', 'American Samoa', 'Denmark']).should == [
-            ['Amerikansk Samoa', 'American Samoa'],
-            ['Danmark', 'Denmark'],
-            ['Petoria', 'Petoria']
-          ]
-        end
-
         describe "with priority countries" do
           it "should put priority countries at the top" do
             helper.should_receive(:options_for_select).with([['Danmark', 'Denmark']], 'Ireland')

@@ -75,14 +75,14 @@ module ActionView
 
         # Returns an array with all country names and their translated equivalent in the current locale.
         def translated_countries
-          translate_countries(countries)
+          translate_countries(countries).sort
         end
 
         # Returns an array with the given country names and their translated equivalent in the current locale.
         def translate_countries(countries = [])
           return countries unless defined?(I18n)
           
-          countries.collect { |country_name|
+          countries.collect do |country_name|
             begin
               # See if there is a translation for this country name
               translation = I18n.translate(country_name, :scope => 'countries', :raise => true)
@@ -93,7 +93,7 @@ module ActionView
             end
 
             [translation, country_name]
-          }.sort {|one, other| one.first <=> other.first}
+          end
         end
 
     end
