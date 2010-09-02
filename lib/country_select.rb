@@ -49,7 +49,7 @@ module ActionView
         "Guinea-Bissau","Guyana","Haiti","Heard Island and McDonald Islands","Holy See (Vatican City State)",
         "Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran, Islamic Republic of","Iraq",
         "Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya",
-        "Kiribati","Korea, Democratic People's Republic of","Korea, Republic of","Kuwait","Kyrgyzstan",
+        "Kiribati","Korea, Democratic People's Republic of","Korea, Republic of","Kosovo, Republic of","Kuwait","Kyrgyzstan",
         "Lao People's Democratic Republic","Latvia","Lebanon","Lesotho","Liberia","Libyan Arab Jamahiriya",
         "Liechtenstein","Lithuania","Luxembourg","Macao","Macedonia, Republic of",
         "Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Martinique",
