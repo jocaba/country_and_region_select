@@ -6,6 +6,14 @@ The list of countries comes from [iso-codes package]( http://svn.debian.org/wsvn
 This plugin is modified from Rails [iso-3166-country-select plugin](http://github.com/rails/iso-3166-country-select/tree/master) 
 and licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php)
 
+
+## Internationalization
+
+The plugin provides support for translating country names via the Rails I18n framework provided with Rails 2.2 (see the [Rails Internationalization (I18n) API guide](http://guides.rubyonrails.org/i18n.html) for details).
+
+The original english country names are stored in the database and will be used as translation keys when translating the country names into their equivalent names in the current locale.
+
+
 ## Example
 
     country_select("user", "country_name")
