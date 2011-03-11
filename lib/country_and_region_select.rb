@@ -1,5 +1,6 @@
 # encoding: UTF-8
-# CountrySelect
+module CountryAndRegionSelect; class Railtie < Rails::Railtie; end; end
+
 module ActionView
   module Helpers
     module FormOptionsHelper

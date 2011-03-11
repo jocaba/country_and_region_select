@@ -9,7 +9,7 @@ and licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php)
 
 ## Internationalization
 
-The plugin provides support for translating country names via the Rails I18n framework provided with Rails 2.2 (see the [Rails Internationalization (I18n) API guide](http://guides.rubyonrails.org/i18n.html) for details).
+The plugin provides support for translating country names via the Rails I18n framework provided with Rails 3.0 (see the [Rails Internationalization (I18n) API guide](http://guides.rubyonrails.org/i18n.html) for details).
 
 The original english country names are stored in the database and will be used as translation keys when translating the country names into their equivalent names in the current locale.
 
