@@ -13,11 +13,11 @@ module ActionView
       def countries
         COUNTRIES
       end
-      
+
       # Returns a string of option tags for pretty much any country in the world. Supply a country name as +selected+ to
       # have it marked as the selected option tag. You can also supply an array of countries as +priority_countries+, so
       # that they will be listed above the rest of the (long) list.
-      # 
+      #
       # All country names should be given in English and will be passed to the current I18n backend. The text displayed
       # in each option tag will be the result of the translation, while the value will remain the english value.
       #
@@ -70,7 +70,7 @@ module ActionView
         "Togo","Tokelau","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan",
         "Turks and Caicos Islands","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom",
         "United States","United States Minor Outlying Islands","Uruguay","Uzbekistan","Vanuatu","Venezuela",
-        "Viet Nam","Virgin Islands, British","Virgin Islands, U.S.","Wallis and Futuna","Western Sahara",
+        "Vietnam","Virgin Islands, British","Virgin Islands, U.S.","Wallis and Futuna","Western Sahara",
         "Yemen","Zambia","Zimbabwe"] unless const_defined?("COUNTRIES")
 
       private
@@ -83,13 +83,13 @@ module ActionView
         # Returns an array with the given country names and their translated equivalent in the current locale.
         def translate_countries(countries = [])
           return countries unless defined?(I18n)
-          
+
           countries.collect do |country_name|
             begin
               # See if there is a translation for this country name
               translation = I18n.translate(country_name, :scope => 'countries', :raise => true)
             rescue I18n::MissingTranslationData
-              # Translation not found for this country, use the original country name, which is probably more correct 
+              # Translation not found for this country, use the original country name, which is probably more correct
               # than 'translation missing...'
               translation = country_name
             end
@@ -99,7 +99,7 @@ module ActionView
         end
 
     end
-    
+
     class InstanceTag
       def to_country_select_tag(priority_countries, options, html_options)
         html_options = html_options.stringify_keys
@@ -113,7 +113,7 @@ module ActionView
         )
       end
     end
-    
+
     class FormBuilder
       def country_select(method, priority_countries = nil, options = {}, html_options = {})
         @template.country_select(@object_name, method, priority_countries, options.merge(:object => @object), html_options)
@@ -122,3 +122,4 @@ module ActionView
 
   end
 end
+
