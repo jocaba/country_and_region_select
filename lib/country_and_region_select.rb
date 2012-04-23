@@ -69,7 +69,7 @@ module ActionView
         "Taiwan","Tajikistan","Tanzania, United Republic of","Thailand","Timor-Leste",
         "Togo","Tokelau","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan",
         "Turks and Caicos Islands","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom",
-        "United States","United States Minor Outlying Islands","Uruguay","Uzbekistan","Vanuatu","Venezuela",
+        "United States","United States of America","United States Minor Outlying Islands","Uruguay","Uzbekistan","Vanuatu","Venezuela",
         "Vietnam","Virgin Islands, British","Virgin Islands, U.S.","Wallis and Futuna","Western Sahara",
         "Yemen","Zambia","Zimbabwe"] unless const_defined?("COUNTRIES")
 
